@@ -10,8 +10,9 @@ import serenitylabs.tutorials.vetclinic.model.PetHotel;
  * Created by pravyada on 9/14/2016.
  */
 public class CheckOut implements Performable {
-    private final PetHotel petHotel;
     private final Pet pet;
+    private final PetHotel petHotel;
+
 
     public CheckOut(Pet pet, PetHotel petHotel) {
         this.pet = pet;
@@ -22,7 +23,7 @@ public class CheckOut implements Performable {
         return new ChekcOutBuilder(pet);
     }
 
-    @Step("{0} Check'sout #pet from #petHotel")
+    @Step("{0} Check out #pet from #petHotel")
     @Override
     public <T extends Actor> void performAs(T t) {
         petHotel.checkOut(pet);
