@@ -7,15 +7,15 @@ import serenitylabs.tutorials.vetclinic.model.PetHotel;
 
 import java.util.Collection;
 
-public class TheGuestsOnTheWaitingList implements Question<Collection<Pet>> {
+public class GuestsInWaitingList implements Question<Collection<Pet>> {
     private final PetHotel petHotel;
 
-    public TheGuestsOnTheWaitingList(PetHotel petHotel) {
+    public GuestsInWaitingList(PetHotel petHotel) {
         this.petHotel = petHotel;
     }
 
-    public static TheGuestsOnTheWaitingList in(PetHotel petHotel) {
-           return new TheGuestsOnTheWaitingList(petHotel);
+    public static GuestsInWaitingList in(PetHotel petHotel) {
+           return new GuestsInWaitingList(petHotel);
     }
 
     @Override

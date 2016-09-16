@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import serenitylabs.tutorials.vetclinic.model.Pet;
 import serenitylabs.tutorials.vetclinic.model.PetHotel;
 import serenitylabs.tutorials.vetclinic.screenplay.questions.RegisteredGuests;
-import serenitylabs.tutorials.vetclinic.screenplay.questions.TheGuestsOnTheWaitingList;
+import serenitylabs.tutorials.vetclinic.screenplay.questions.GuestsInWaitingList;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckIn;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckOut;
 
@@ -61,11 +61,10 @@ public class BookingAPetIntoHotel {
     @Test
     public void petra_checks_her_pet_in_when_the_hotel_is_full(){
         //GIVEN
+
         Actor petra = Actor.named("Petra the pet owner");
         Pet ginger = Pet.cat().named("Ginger");
         PetHotel petHotel = APetHotel.with(20).petsCheckedIn();
-
-
 
         //WHEN
         petra.attemptsTo(CheckIn.aPet(ginger).into(petHotel));
@@ -73,9 +72,7 @@ public class BookingAPetIntoHotel {
         //THEN
         petra.should(
                 seeThat(RegisteredGuests.in(petHotel),not(hasItem(ginger))),
-                seeThat(TheGuestsOnTheWaitingList.in(petHotel),hasItem(ginger))
+                seeThat(GuestsInWaitingList.in(petHotel),hasItem(ginger))
         );
-
-
     }
 }
