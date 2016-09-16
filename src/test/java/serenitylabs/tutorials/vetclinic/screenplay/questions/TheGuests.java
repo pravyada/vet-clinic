@@ -13,11 +13,11 @@ import java.util.List;
  * Created by pravyada on 9/16/2016.
  */
 public class TheGuests {
-    public static Question<List<Pet>> registeredInHotel(PetHotel petHotel) {
+    public static Question<List<Pet>> registeredInHotel() {
         return actor -> actor.usingAbilityTo(ManageTheHotel.class).getRegisteredPets();
     }
 
-    public static Question<Collection<Pet>> onTheWaitingListIn(PetHotel petHotel) {
+    public static Question<Collection<Pet>> onTheWaitingListIn() {
 
         return actor -> actor.usingAbilityTo(ManageTheHotel.class).getPetsOnWaitingList();
     }

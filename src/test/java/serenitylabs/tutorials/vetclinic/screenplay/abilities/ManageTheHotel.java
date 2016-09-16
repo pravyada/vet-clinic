@@ -16,17 +16,18 @@ public class ManageTheHotel implements Ability {
     public ManageTheHotel(PetHotel petHotel) {
         this.petHotel = petHotel;
     }
-
     public void checkInPet(Pet pet) {
         petHotel.checkIn(pet);
     }
-
     public List<Pet> getRegisteredPets() {
         return petHotel.getPets();
 
     }
-
     public Collection<Pet> getPetsOnWaitingList() {
         return petHotel.getWaitingList();
+    }
+
+    public static Ability the(PetHotel petHotel) {
+        return new ManageTheHotel(petHotel);
     }
 }
