@@ -15,150 +15,125 @@ These tutorials are designed to be used as the basis of small coding exercises (
 
 The domain is a simple one. We are writing an application for a Vet clinic, where you can take your pets to be treated when they are sick. At the vet clinic, we need to be able to register new animals when they arrive for treatment.
 
-In the exercises for this tutorial we will be writing basic tests using the Screenplay pattern.
+In the exercises for this tutorial we will be working with Screenplay Abilities.
 
-## Exercise 1 - checking in to a pet hotel
+## Exercise 1 - Check in guests at the start of the test using Abilities
 
-### Step 1
-Create a test class called `WhenCheckingInToThePetHotel` with a test method `petra_books_her_pet_cat_into_the_hotel()`. Configure the test to run with the `SerenityRunner` class:
+The aim of this exercise is to create a new Ability to manage the hotel, and to use this ability to register guests with the hotel.
+
+### Step 1 - Add a new actor
+
+In the `WhenCheckingInToThePetHotel` class, go to the `petra_checks_her_cat_in_when_the_hotel_is_full()` method. Add a new actor called 'Harry the Hotel Manager':
 
 ```
-@RunWith(SerenityRunner.class)
-public class WhenCheckingInToThePetHotel {
+Actor harry = Actor.named("Harry the hotel manager");
+```
 
-    @Test
-    public void petra_books_her_pet_cat_into_the_hotel() {
+### Step 2 - Describe the actor
+
+Harry the hotel manager can manage hotel registrations and guest lists. Give Harry the ability to manage the pet hotel using a new class `Manage` and a new factory method `Manage.the(petHotel)`:
+
+```
+harry.can(Manage.the(petHotel));
+```
+
+### Step 3 - Implement the factory class and method:
+
+Create the `Manage` class and the `the()` method which should return a new `Ability` of type `ManageTheHotel`:
+
+```
+public class Manage {
+    public static Ability the(PetHotel petHotel) {
+        return new ManageTheHotel(petHotel);
     }
 }
 ```
 
-### Step 2
-Implement the test so that it demonstrates that when Petra checks in her pet cat, the cat appears in the list of registered guests, e.g:
+### Step 4 - Implement the `ManageTheHotel` class:
+
+Create a new class `ManageTheHotel` that has a `PetHotel` field to manage:
 
 ```
-    // GIVEN
-
-    Actor petra = Actor.named("Petra the pet owner");
-    Pet ginger = Pet.cat().named("Ginger");
-    PetHotel petHotel = PetHotel.called("Pet Hotel California");
-
-    // WHEN
-    petra.attemptsTo(
-            CheckIn.aPet(ginger).into(petHotel)
-    );
-
-    // THEN
-    assertThat(petHotel.getPets(), hasItem(ginger));
-
-```
-
-### Step 3
-Implement the CheckIn class using a builder pattern.
-
-```
-public class CheckIn implements Performable {
-    private final Pet pet;
+public class ManageTheHotel implements Ability {
     private final PetHotel petHotel;
 
-    public CheckIn(Pet pet, PetHotel petHotel) {
-        this.pet = pet;
+    public ManageTheHotel(PetHotel petHotel) {
         this.petHotel = petHotel;
-    }
-
-    public <T extends Actor> void performAs(T actor) {}
-
-    public static CheckInBuilder aPet(Pet pet) {
-        return new CheckInBuilder(pet);
-    }
-
-    public static class CheckInBuilder {
-        private final Pet pet;
-
-        public CheckInBuilder(Pet pet) {
-            this.pet = pet;
-        }
-
-        public Performable into(PetHotel petHotel) {
-            return new CheckIn(pet, petHotel);
-        }
     }
 }
 ```
 
-### Step 4
-Implement the `performAs()` method to contain the correct business logic:
-
-
-```
-    public <T extends Actor> void performAs(T actor) {
-        petHotel.checkIn(pet);
-    }
-```
-
-You should now be able to run the test.
-
-### Step 5
-Add instrumentation to the builder:
+### Step 5 - Inject the test data
+ 
+Delete the `PetHotel` instantiation (the line containing `APetHotel.with(20).petsCheckedIn()`), and replace it with a statement that Harry was able to fill the hotel with 20 cats, using the provide `FillTheHotel` class: 
 
 ```
-        public Performable into(PetHotel petHotel) {
-            return Instrumented.instanceOf(CheckIn.class).withProperties(pet, petHotel);
-        }
-```
-
-### Step 6
-Add the `@Step` annotation to the `performAs()` method:
-
-```
-    @Step("{0} checks #pet into #petHotel")
-    @Override
-    public <T extends Actor> void performAs(T actor) {
-        petHotel.checkIn(pet);
-    }
-```
-
-Now run the test and check that the correct reporting appears in the Serenity HTML report in the `target/site/serenity` directory.
-
-## Exercise 2 - checking out of the hotel
-
-### Step 1
-
-Write a new test called `petra_checks_her_cat_out_of_the_hotel()`. In the GIVEN section, use the `wasAbleTo()` method of the `Actor` class to execute a task as part of the test setup:
-
-```
-        // GIVEN
-
-        Actor petra = Actor.named("Petra the pet owner");
-        Pet ginger = Pet.cat().named("Ginger");
-        PetHotel petHotel = PetHotel.called("Pet Hotel California");
-
-        petra.wasAbleTo(CheckIn.aPet(ginger).into(petHotel));
-```
-
-### Step 2
-
-Write the rest of the test body, where Petra checks her pet out and verifies that her pet is no longer registered at the hotel:
-
-```
-        // WHEN
-        petra.attemptsTo(
-                CheckOut.aPet(ginger).from(petHotel)
+        harry.wasAbleTo(
+                FillTheHotel.with(20).cats()
         );
-
-        // THEN
-        assertThat(petHotel.getPets(), not(hasItem(ginger)));
 ```
 
-### Step 3
+### Step 6 - Finish the `FillTheHotel` class
 
-Implement the CheckOut class (don't copy-paste!):
+The `FillTheHotel` class is incomplete. Replace the line with the TODO comment with a statement that uses the actor's `ManageTheHotel` ability (that we assigned in the test case):
 
-   - Create the `CheckOut` class
-   - Make it extend `Performable`
-   - Implement the `aPet()` method and make it return a `CheckOutBuilder` instance
-   - Create the `CheckOutBuilder` class
-   - Implement the `from()` method to return an instrumented instance of the `CheckOut` class.
-   - Add the `pet` and `petHotel` fields to the `CheckOut` class, and a constructor to initialise them.
-   - Implement the `performAs()` method.
-   
-Now run the test and check that the correct reporting appears in the Serenity HTML report in the `target/site/serenity` directory.
+```
+actor.usingAbilityTo(ManageTheHotel.class).checkInPet(pet);
+```
+
+### Step 7 - Implement the `checkInPet()` method  
+
+Implement the `checkInPet()` method in the `ManageTheHotel` class, so that it calls the `petHotel` member variable:
+
+```
+    public void checkInPet(Pet pet) {
+        petHotel.checkIn(pet);
+    }
+```
+
+Ensure that the refactored test still runs.
+
+## Exercise 2 - Query the guest list using Abilities
+
+This exercise involves refactoring the questions in the `petra_checks_her_cat_in_when_the_hotel_is_full()` method, so that they use the Abilities rather than the `pethHotel` object directly.
+
+### Step 1 - Make Harry more assertive
+
+Replay the assertion section of the test (`petra.should(...)`) with `harry.should()`
+
+### Step 2 - Add an assertion to check that Ginger the cat was not registered as a guest, e.g:
+
+```
+seeThat(TheGuests.registeredInTheHotel(), not(hasItem(ginger)))
+```
+
+### Step 3 - Implement the Question class
+
+Create a new factory class called `TheGuests`, and a method called `registeredInTheHotel()`. Implement the `registeredInTheHotel()` using the `ManageTheHotel` ability, and adding the `getRegisteredPets()` method to the `ManageTheHotel` class:
+
+```
+public class TheGuests {
+    public static Question<List<Pet>> registeredInTheHotel() {
+        return actor -> actor.usingAbilityTo(ManageTheHotel.class)
+                             .getRegisteredPets();
+    }
+}
+```
+
+# Step 4 - Implement the Activity method
+
+Implement the `getRegisteredPets()` method using the `petHotel` object, e.g.
+
+    public List<Pet> getRegisteredPets() {
+        return petHotel.getPets();
+    }
+
+Ensure that the tests still run correctly.
+
+## Exercise 3 - Query the waiting lists using Abilities
+
+Use the same technique to add a check that Ginger the cat is in the waiting list:
+
+```
+seeThat(TheGuests.onTheWaitingList(), hasItem(ginger))
+```

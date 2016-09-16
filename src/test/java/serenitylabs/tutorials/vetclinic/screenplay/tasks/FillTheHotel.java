@@ -1,49 +1,45 @@
 package serenitylabs.tutorials.vetclinic.screenplay.tasks;
 
-
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.thucydides.core.annotations.Step;
 import serenitylabs.tutorials.vetclinic.model.Breed;
 import serenitylabs.tutorials.vetclinic.model.Pet;
-import serenitylabs.tutorials.vetclinic.screenplay.abilities.ManageTheHotel;
 
 public class FillTheHotel implements Task {
-    private final int numOfPets;
+    private final int numberOfPets;
     private final Breed breed;
 
-    public FillTheHotel(int numOfPets, Breed breed) {
-        this.numOfPets = numOfPets;
+    public FillTheHotel(int numberOfPets, Breed breed) {
+        this.numberOfPets = numberOfPets;
         this.breed = breed;
     }
 
-    @Step("{0} books in #numOfPets pets")
+    @Step("{0} books in #numberOfPets pets")
     @Override
     public <T extends Actor> void performAs(T actor) {
-        for(int count = 1;count<=numOfPets;count++){
-            Pet pet = new Pet("Pet #"+count,breed);
-            actor.usingAbilityTo(ManageTheHotel.class).checkInPet(pet);
+        for(int petcount = 1; petcount <= numberOfPets; petcount++) {
+            Pet pet = new Pet("Pet #" + petcount, breed);
+            // TODO: Register the pet with the hotel
         }
     }
 
-    public static FillTheHotelBuilder with(int numOfPets) {
-
-        return new FillTheHotelBuilder(numOfPets);
+    public static FillHotelBuilder with(int numberOfPets) {
+        return new FillHotelBuilder(numberOfPets);
     }
 
-    public static class FillTheHotelBuilder {
-        private final int numOfPets;
+    public static class FillHotelBuilder {
+        private final int numberOfPets;
 
-        public FillTheHotelBuilder(int numOfPets) {
-            this.numOfPets = numOfPets;
+        public FillHotelBuilder(int numberOfPets) {
+            this.numberOfPets = numberOfPets;
         }
 
         public Task cats() {
-            return new FillTheHotel(numOfPets, Breed.Cat);
+            return new FillTheHotel(numberOfPets, Breed.Cat);
         }
-
-        public Task dogs(){
-            return new FillTheHotel(numOfPets,Breed.Dog);
+        public Task dogs() {
+            return new FillTheHotel(numberOfPets, Breed.Dog);
         }
     }
 }
