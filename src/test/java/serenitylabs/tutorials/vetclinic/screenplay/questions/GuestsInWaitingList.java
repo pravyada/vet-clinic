@@ -18,6 +18,7 @@ public class GuestsInWaitingList implements Question<Collection<Pet>> {
            return new GuestsInWaitingList(petHotel);
     }
 
+
     @Override
     public Collection<Pet> answeredBy(Actor actor) {
         return petHotel.getWaitingList();

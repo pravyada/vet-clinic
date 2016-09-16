@@ -7,12 +7,11 @@ import org.junit.runner.RunWith;
 import serenitylabs.tutorials.vetclinic.model.Pet;
 import serenitylabs.tutorials.vetclinic.model.PetHotel;
 import serenitylabs.tutorials.vetclinic.screenplay.questions.RegisteredGuests;
-import serenitylabs.tutorials.vetclinic.screenplay.questions.GuestsInWaitingList;
 import serenitylabs.tutorials.vetclinic.screenplay.questions.TheGuests;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckIn;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckOut;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.FillTheHotel;
-import serenitylabs.tutorials.vetclinic.screenplay.tasks.Mangae;
+import serenitylabs.tutorials.vetclinic.screenplay.tasks.Manage;
 
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
@@ -70,7 +69,7 @@ public class BookingAPetIntoHotel {
         Pet ginger = Pet.cat().named("Ginger");
 
         Actor harry = Actor.named("Harry the hotel manager");
-        harry.can(Mangae.the(petHotel));
+        harry.can(Manage.the(petHotel));
 
         //GIVEN
         harry.wasAbleTo(

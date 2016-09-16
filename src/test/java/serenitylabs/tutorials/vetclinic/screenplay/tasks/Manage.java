@@ -7,7 +7,7 @@ import serenitylabs.tutorials.vetclinic.screenplay.abilities.ManageTheHotel;
 /**
  * Created by pravyada on 9/16/2016.
  */
-public class Mangae {
+public class Manage {
     public static Ability the(PetHotel petHotel) {
         return new ManageTheHotel(petHotel);
     }
