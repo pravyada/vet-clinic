@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import serenitylabs.tutorials.vetclinic.model.Pet;
 import serenitylabs.tutorials.vetclinic.model.PetHotel;
 import serenitylabs.tutorials.vetclinic.screenplay.questions.RegisteredGuests;
+import serenitylabs.tutorials.vetclinic.screenplay.questions.TheGuestsOnTheWaitingList;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckIn;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckOut;
 
@@ -68,13 +69,19 @@ public class BookingAPetIntoHotel {
         //GIVEN
         Actor petra = Actor.named("Petra the pet owner");
         Pet ginger = Pet.cat().named("Ginger");
-        PetHotel petHotel = APetHotel.with(3).petsCheckedIn();
+        PetHotel petHotel = APetHotel.with(20).petsCheckedIn();
+
+
 
         //WHEN
-        petra.attemptsTo(
-                CheckIn.aPet(ginger).into(petHotel)
-        );
+        petra.attemptsTo(CheckIn.aPet(ginger).into(petHotel));
+
         //THEN
+        petra.should(
+                seeThat(RegisteredGuests.in(petHotel),not(hasItem(ginger))),
+                seeThat(TheGuestsOnTheWaitingList.in(petHotel),hasItem(ginger))
+        );
+
 
     }
 }
