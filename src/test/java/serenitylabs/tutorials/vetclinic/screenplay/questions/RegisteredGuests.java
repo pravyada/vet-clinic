@@ -8,9 +8,6 @@ import serenitylabs.tutorials.vetclinic.model.PetHotel;
 
 import java.util.List;
 
-/**
- * Created by pravyada on 9/15/2016.
- */
 
 @Subject("the pets in the hotel")
 public class RegisteredGuests implements  Question<List<Pet>>{

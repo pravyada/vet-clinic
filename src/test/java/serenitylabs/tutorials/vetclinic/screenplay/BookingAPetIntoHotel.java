@@ -2,7 +2,6 @@ package serenitylabs.tutorials.vetclinic.screenplay;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.screenplay.Actor;
-import net.serenitybdd.screenplay.Question;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import serenitylabs.tutorials.vetclinic.model.Pet;
@@ -12,17 +11,12 @@ import serenitylabs.tutorials.vetclinic.screenplay.questions.TheGuestsOnTheWaiti
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckIn;
 import serenitylabs.tutorials.vetclinic.screenplay.tasks.CheckOut;
 
-import java.util.List;
 
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 
-/**
- * Created by pravyada on 9/14/2016.
- */
+
 @RunWith(SerenityRunner.class)
 public class BookingAPetIntoHotel {
 

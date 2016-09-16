@@ -7,9 +7,6 @@ import serenitylabs.tutorials.vetclinic.model.PetHotel;
 
 import java.util.Collection;
 
-/**
- * Created by pravyada on 9/16/2016.
- */
 public class TheGuestsOnTheWaitingList implements Question<Collection<Pet>> {
     private final PetHotel petHotel;
 
